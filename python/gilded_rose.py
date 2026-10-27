@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 
+AGED_BRIE = "Aged Brie"
+BACKSTAGE_PASS = "Backstage passes to a TAFKAL80ETC concert"
+SULFURAS = "Sulfuras, Hand of Ragnaros"
+MAX_QUALITY = 50
+MIN_QUALITY = 0
+
+
 class GildedRose(object):
 
     def __init__(self, items):
