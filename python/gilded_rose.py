@@ -7,7 +7,7 @@ MAX_QUALITY = 50
 MIN_QUALITY = 0
 
 
-class GildedRose(object):
+class GildedRose:
 
     def __init__(self, items):
         self.items = items
