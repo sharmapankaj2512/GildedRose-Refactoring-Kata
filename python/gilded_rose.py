@@ -50,10 +50,6 @@ class GildedRose:
         if item.sell_in < 0:
             self._lower_quality(item)
 
-    def _advance_day(self, item):
-        item.sell_in -= 1
-        return item.sell_in < 0
-
     def _raise_quality(self, item):
         if item.quality < MAX_QUALITY:
             item.quality += 1
