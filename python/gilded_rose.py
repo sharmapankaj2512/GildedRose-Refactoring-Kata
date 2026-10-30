@@ -4,6 +4,8 @@ AGED_BRIE = "Aged Brie"
 BACKSTAGE_PASS = "Backstage passes to a TAFKAL80ETC concert"
 SULFURAS = "Sulfuras, Hand of Ragnaros"
 MAX_QUALITY = 50
+DOUBLE_VALUE_DAYS = 11
+TRIPLE_VALUE_DAYS = 6
 MIN_QUALITY = 0
 
 
@@ -34,9 +36,9 @@ class GildedRose:
 
     def _update_backstage_pass(self, item):
         self._raise_quality(item)
-        if item.sell_in < 11:
+        if item.sell_in < DOUBLE_VALUE_DAYS:
             self._raise_quality(item)
-        if item.sell_in < 6:
+        if item.sell_in < TRIPLE_VALUE_DAYS:
             self._raise_quality(item)
         item.sell_in -= 1
         if item.sell_in < 0:
