@@ -19,7 +19,7 @@ class GildedRose:
             self._update_item(item)
 
     def _update_item(self, item):
-        if item.name == SULFURAS:
+        if self._is_legendary(item):
             return
         if item.name == AGED_BRIE:
             self._update_aged_brie(item)
@@ -46,6 +46,9 @@ class GildedRose:
         self._lower_quality(item)
         if self._advance_day(item):
             self._lower_quality(item)
+
+    def _is_legendary(self, item):
+        return item.name == SULFURAS
 
     def _advance_day(self, item):
         item.sell_in -= 1
