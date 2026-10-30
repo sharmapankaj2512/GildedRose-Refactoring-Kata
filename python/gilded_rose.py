@@ -48,6 +48,7 @@ class GildedRose(object):
             self._lower_quality(item)
 
     def _advance_day(self, item):
+        """One day passes; True once the sell-by date is behind us."""
         item.sell_in -= 1
         return item.sell_in < 0
 
