@@ -9,7 +9,7 @@ DOUBLE_VALUE_DAYS = 11
 TRIPLE_VALUE_DAYS = 6
 
 
-class GildedRose(object):
+class GildedRose:
 
     def __init__(self, items):
         self.items = items
@@ -48,7 +48,6 @@ class GildedRose(object):
             self._lower_quality(item)
 
     def _advance_day(self, item):
-        """One day passes; True once the sell-by date is behind us."""
         item.sell_in -= 1
         return item.sell_in < 0
 
