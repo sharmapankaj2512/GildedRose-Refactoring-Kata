@@ -30,8 +30,7 @@ class GildedRose(object):
 
     def _update_aged_brie(self, item):
         self._raise_quality(item)
-        item.sell_in -= 1
-        if item.sell_in < 0:
+        if self._advance_day(item):
             self._raise_quality(item)
 
     def _update_backstage_pass(self, item):
@@ -40,15 +39,17 @@ class GildedRose(object):
             self._raise_quality(item)
         if item.sell_in < TRIPLE_VALUE_DAYS:
             self._raise_quality(item)
-        item.sell_in -= 1
-        if item.sell_in < 0:
+        if self._advance_day(item):
             item.quality = MIN_QUALITY
 
     def _update_ordinary(self, item):
         self._lower_quality(item)
-        item.sell_in -= 1
-        if item.sell_in < 0:
+        if self._advance_day(item):
             self._lower_quality(item)
+
+    def _advance_day(self, item):
+        item.sell_in -= 1
+        return item.sell_in < 0
 
     def _is_legendary(self, item):
         return item.name == SULFURAS
