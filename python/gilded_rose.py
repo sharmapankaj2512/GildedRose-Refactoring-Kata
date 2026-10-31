@@ -16,33 +16,59 @@ class GildedRose(object):
 
     def update_quality(self):
         for item in self.items:
-            if item.name != AGED_BRIE and item.name != BACKSTAGE_PASS:
-                if item.quality > MIN_QUALITY:
-                    if item.name != SULFURAS:
-                        item.lower_quality()
-            else:
-                if item.quality < MAX_QUALITY:
-                    item.raise_quality()
-                    if item.name == BACKSTAGE_PASS:
-                        if item.sell_in < DOUBLE_VALUE_DAYS:
-                            if item.quality < MAX_QUALITY:
-                                item.raise_quality()
-                        if item.sell_in < TRIPLE_VALUE_DAYS:
-                            if item.quality < MAX_QUALITY:
-                                item.raise_quality()
-            if item.name != SULFURAS:
-                item.advance_day()
-            if item.is_expired():
-                if item.name != AGED_BRIE:
-                    if item.name != BACKSTAGE_PASS:
-                        if item.quality > MIN_QUALITY:
-                            if item.name != SULFURAS:
-                                item.lower_quality()
-                    else:
-                        item.drop_quality()
-                else:
-                    if item.quality < MAX_QUALITY:
-                        item.raise_quality()
+            ageing_for(item).age(item)
+
+
+class Legendary:
+    """Sulfuras never has to be sold and never loses quality."""
+
+    def age(self, item):
+        return
+
+
+class Maturing:
+    """Aged Brie increases in quality the older it gets."""
+
+    def age(self, item):
+        item.raise_quality()
+        item.advance_day()
+        if item.is_expired():
+            item.raise_quality()
+
+
+class Appreciating:
+    """A backstage pass gains value as the concert nears, then becomes worthless."""
+
+    def age(self, item):
+        item.raise_quality()
+        if item.sell_in < DOUBLE_VALUE_DAYS:
+            item.raise_quality()
+        if item.sell_in < TRIPLE_VALUE_DAYS:
+            item.raise_quality()
+        item.advance_day()
+        if item.is_expired():
+            item.drop_quality()
+
+
+class Perishable:
+    """Ordinary stock degrades, twice as fast once its sell-by date passes."""
+
+    def age(self, item):
+        item.lower_quality()
+        item.advance_day()
+        if item.is_expired():
+            item.lower_quality()
+
+
+AGEING = {
+    SULFURAS: Legendary(),
+    AGED_BRIE: Maturing(),
+    BACKSTAGE_PASS: Appreciating(),
+}
+
+
+def ageing_for(item):
+    return AGEING.get(item.name, Perishable())
 
 
 class Item:
