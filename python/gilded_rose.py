@@ -9,7 +9,7 @@ DOUBLE_VALUE_DAYS = 11
 TRIPLE_VALUE_DAYS = 6
 
 
-class GildedRose(object):
+class GildedRose:
 
     def __init__(self, items):
         self.items = items
