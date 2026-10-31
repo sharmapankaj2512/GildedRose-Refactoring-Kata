@@ -19,30 +19,30 @@ class GildedRose(object):
             if item.name != AGED_BRIE and item.name != BACKSTAGE_PASS:
                 if item.quality > MIN_QUALITY:
                     if item.name != SULFURAS:
-                        item.quality = item.quality - 1
+                        item.lower_quality()
             else:
                 if item.quality < MAX_QUALITY:
-                    item.quality = item.quality + 1
+                    item.raise_quality()
                     if item.name == BACKSTAGE_PASS:
                         if item.sell_in < DOUBLE_VALUE_DAYS:
                             if item.quality < MAX_QUALITY:
-                                item.quality = item.quality + 1
+                                item.raise_quality()
                         if item.sell_in < TRIPLE_VALUE_DAYS:
                             if item.quality < MAX_QUALITY:
-                                item.quality = item.quality + 1
+                                item.raise_quality()
             if item.name != SULFURAS:
-                item.sell_in = item.sell_in - 1
-            if item.sell_in < 0:
+                item.advance_day()
+            if item.is_expired():
                 if item.name != AGED_BRIE:
                     if item.name != BACKSTAGE_PASS:
                         if item.quality > MIN_QUALITY:
                             if item.name != SULFURAS:
-                                item.quality = item.quality - 1
+                                item.lower_quality()
                     else:
-                        item.quality = item.quality - item.quality
+                        item.drop_quality()
                 else:
                     if item.quality < MAX_QUALITY:
-                        item.quality = item.quality + 1
+                        item.raise_quality()
 
 
 class Item:
@@ -50,6 +50,23 @@ class Item:
         self.name = name
         self.sell_in = sell_in
         self.quality = quality
+
+    def advance_day(self):
+        self.sell_in -= 1
+
+    def is_expired(self):
+        return self.sell_in < 0
+
+    def raise_quality(self):
+        if self.quality < MAX_QUALITY:
+            self.quality += 1
+
+    def lower_quality(self):
+        if self.quality > MIN_QUALITY:
+            self.quality -= 1
+
+    def drop_quality(self):
+        self.quality = MIN_QUALITY
 
     def __repr__(self):
         return "%s, %s, %s" % (self.name, self.sell_in, self.quality)
